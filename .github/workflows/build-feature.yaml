@@ -14,8 +14,9 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           
-      - name: Pull and checkout from git repository
-        run: bash bash/functions.sh
+      - name: pull and checkout from git repository
+        run: |
+           echo "pulling and checking out from git repository"
 
       - name: setup java 17 
         uses: actions/setup-java@v3
@@ -89,5 +90,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
-          event-type: publish-artifact-event
+          event-type: publish-artifact-event          
           client-payload: '{ "base_branch": "${{ github.base_ref }}" }'
+
+    
+      
