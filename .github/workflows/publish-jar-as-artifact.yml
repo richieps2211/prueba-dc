@@ -1,7 +1,7 @@
 name: Publish jar as artifact 
 on:
   repository_dispatch:
-    types: [richie-artifactory]
+    types: [publish-artifact-event]
 jobs:
   dowlonad-artifact-job:
     runs-on: ubuntu-latest
