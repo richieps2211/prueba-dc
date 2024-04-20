@@ -1,35 +1,35 @@
-name: Build and Feature Maven
-
+name: build and test feature branch
 on:
   pull_request:
     branches: [ develop ]
     types: [ opened, reopened ]
-
-jobs:
+jobs: 
   build-feature:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      #############################################################
+      # 2- dowload code from feature branch , setup java 8 and check that source code is buildable
+      ########################################################
+      - uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
-      
+          
       - name: Pull and checkout from git repository
         run: bash bash/functions.sh
 
-      - name: Setup Java 17
+      - name: setup java 17 
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
+          distribution: 'temurin' # See 'Supported distributions' for available options
           java-version: '17'
 
-      - name: Cache Maven Dependencias
+      - name: Cache Maven dependencies
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml')}}
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
-           ${{ runner.os }}-maven-
+            ${{ runner.os }}-maven-
 
       - name: build with maven
         run: |
@@ -81,7 +81,7 @@ jobs:
           branch: ${{ github.base_ref }}
 
       ######################################################## 
-      # 4- call publish-jar-das-artifact
+      # 4- call publish-jar-as-artifact
       ######################################################## 
       - name: trigger deploy artifact
         if: success()
@@ -92,4 +92,5 @@ jobs:
           event-type: publish-artifact-event          
           client-payload: '{ "base_branch": "${{ github.base_ref }}" }'
 
-
+    
+      
