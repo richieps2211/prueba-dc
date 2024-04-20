@@ -81,7 +81,7 @@ jobs:
           branch: ${{ github.base_ref }}
 
       ######################################################## 
-      # 4- call publish-jar-as-artifact
+      # 4- call publish-jar-das-artifact
       ######################################################## 
       - name: trigger deploy artifact
         if: success()
