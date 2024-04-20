@@ -1,9 +1,9 @@
 name: Build and Feature Maven
 
 on:
-  push:
-    branches:
-      - 'feature/*'
+  pull_request:
+    branches: [ develop ]
+    types: [ opened, reopened ]
 
 jobs:
   build-feature:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
       
       - name: Pull and checkout from git repository
         run: bash bash/functions.sh
@@ -21,7 +23,15 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Cache Maven Dependencias
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml')}}
+          restore-keys: |
+           ${{ runner.os }}-maven-
+
       - name: build with maven
         run: |
-          mvnw clean install
+          mvn clean test package
           echo "build with maven"
