@@ -13,8 +13,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Pull and checkout from git repository
-        run: |
-          echo "Pulling and checking from git repository"
+        run: bash bash/functions.sh
 
       - name: Setup Java 17
         uses: actions/setup-java@v3
