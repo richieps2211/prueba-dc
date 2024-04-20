@@ -1,0 +1,27 @@
+name: Build and Feature Maven
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+
+jobs:
+  build-feature:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      
+      - name: Pull and checkout from git repository
+        run: bash bash/functions.sh
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: build with maven
+        run: |
+          mvnw clean install
+          echo "build with maven"
